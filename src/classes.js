@@ -1,5 +1,3 @@
-import { lg } from "./functions.js";
-
 class State {
 
     controlPointMapping = {
@@ -43,6 +41,7 @@ class State {
         this.controlPoints[controlPoint] = value
         // Rebuilds the overlay to display colors beside the radio button
         this.reRenderDOMControlPoints = true
+        this.worldNeedsUpdate = true
     }
 
     changeVarusRotation(sign) {
@@ -67,5 +66,3 @@ class State {
 }
 
 export let state = new State()
-
-// lg(state.controlPoints)

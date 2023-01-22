@@ -84,8 +84,6 @@
     scene.background = new THREE.Color("#000");
 
     // renderer settings
-    renderer.shadowMap.enabled = false;
-    // renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     renderer.localClippingEnabled = true;
 
     // lights
@@ -107,6 +105,7 @@
 
     // functions
     function retargetControls() {
+        // Sets the OrbitControls to target the centre of the structure
         const bbox = new THREE.Box3().setFromObject(group);
         orbitControls.target = new THREE.Vector3().addVectors(bbox.min, bbox.max).multiplyScalar(0.5);
     }
@@ -143,27 +142,29 @@
 
     populateControlPointsToDom(document.getElementById("controlPoints"));
 
-    state.setControlPoint("fc", get3DControlPoint([-0.622, 7.21, 0.95]));
-    state.setControlPoint("hc", get3DControlPoint([-0.883, 11.533, 1.13]));
-    state.setControlPoint("le", get3DControlPoint([-0.975, 7.35, 0.944]));
-    state.setControlPoint("me", get3DControlPoint([-0.195, 7.35, 0.915]));
-    state.setControlPoint("dmp", get3DControlPoint([-0.344, 7.14, 0.728]));
-    state.setControlPoint("dlp", get3DControlPoint([-0.838, 7.143, 0.798]));
-    state.setControlPoint("plp", get3DControlPoint([-0.816, 7.443, 0.658]));
-    state.setControlPoint("pmp", get3DControlPoint([-0.362, 7.422, 0.589]));
-    state.setControlPoint("fdc", get3DControlPoint([-0.5998, 7.21, 0.918]));
-    state.setControlPoint("fpc", get3DControlPoint([-1.098, 11.276, 0.991]));
+    // Dummy data if you want to play around with planes and lines
 
-    scene.add(state.controlPoints.fc);
-    scene.add(state.controlPoints.hc);
-    scene.add(state.controlPoints.le);
-    scene.add(state.controlPoints.me);
-    scene.add(state.controlPoints.dmp);
-    scene.add(state.controlPoints.dlp);
-    scene.add(state.controlPoints.plp);
-    scene.add(state.controlPoints.pmp);
-    scene.add(state.controlPoints.fdc);
-    scene.add(state.controlPoints.fpc);
+    // state.setControlPoint("fc", get3DControlPoint([-0.622, 7.21, 0.95]));
+    // state.setControlPoint("hc", get3DControlPoint([-0.883, 11.533, 1.13]));
+    // state.setControlPoint("le", get3DControlPoint([-0.975, 7.35, 0.944]));
+    // state.setControlPoint("me", get3DControlPoint([-0.195, 7.35, 0.915]));
+    // state.setControlPoint("dmp", get3DControlPoint([-0.344, 7.14, 0.728]));
+    // state.setControlPoint("dlp", get3DControlPoint([-0.838, 7.143, 0.798]));
+    // state.setControlPoint("plp", get3DControlPoint([-0.816, 7.443, 0.658]));
+    // state.setControlPoint("pmp", get3DControlPoint([-0.362, 7.422, 0.589]));
+    // state.setControlPoint("fdc", get3DControlPoint([-0.5998, 7.21, 0.918]));
+    // state.setControlPoint("fpc", get3DControlPoint([-1.098, 11.276, 0.991]));
+
+    // scene.add(state.controlPoints.fc);
+    // scene.add(state.controlPoints.hc);
+    // scene.add(state.controlPoints.le);
+    // scene.add(state.controlPoints.me);
+    // scene.add(state.controlPoints.dmp);
+    // scene.add(state.controlPoints.dlp);
+    // scene.add(state.controlPoints.plp);
+    // scene.add(state.controlPoints.pmp);
+    // scene.add(state.controlPoints.fdc);
+    // scene.add(state.controlPoints.fpc);
 
     function update() {
         let sidebar = document.getElementById("sidebar-right");
@@ -217,7 +218,6 @@
             state.planes.mech = plane;
             state.planes.mechHelper = helper;
             scene.remove(scene.getObjectByName(name));
-            // scene.add(helper);
         }
 
         if (state.lines.tea && state.planes.mech) {
@@ -259,7 +259,6 @@
             state.planes.projectedTea = plane;
             state.planes.projectedTeaHelper = helper;
             scene.remove(scene.getObjectByName(name));
-            // scene.add( helper );
 
             let baseVector = state.controlPoints.fc.position.clone();
             let intersectionVector = planeNormal.clone().cross(state.planes.mech.normal.clone());
@@ -427,12 +426,11 @@
             // from the following research paper https://www.mdpi.com/2673-4036/1/2/9
             // total length = 89cm
             // total height of stl models after scaling down = 29.0934936523m
-            // length = 10mmx
+            // length = 10mm
             // k (length taking in consideration the model's dimensions) = 0.327m
             let k = 0.0327 * state.distalResection
             const kVector = new THREE.Vector3(0, 1, 0).multiplyScalar(k)
             let offset = kVector.dot(plane.normal)
-            lg(offset)
 
             plane.translate(plane.normal.clone().multiplyScalar(offset))
             const helper = new THREE.PlaneHelper(plane, 5, "white");
@@ -500,6 +498,9 @@
 
         }
 
+        if (sidebar.innerHTML === "") {
+            sidebar.innerHTML = `Please Select Landmark Points <br/> to display Plane controls`
+        }
     }
 
     document.getElementById("update").onclick = update;
@@ -552,7 +553,12 @@
 
         if (state.worldNeedsUpdate) {
             state.worldNeedsUpdate = false;
+            try{
+
             update();
+            }catch(e){
+                console.error(e)
+            }
         }
 
         let controlPoint3DObject = state.controlPoints[state.activeControlPoint];

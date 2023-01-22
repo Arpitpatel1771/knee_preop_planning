@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "http-server ./src"
   },
   "repository": {
     "type": "git",
@@ -16,7 +17,8 @@
     "url": "https://github.com/Arpitpatel1771/knee_preop_planning/issues"
   },
   "homepage": "https://github.com/Arpitpatel1771/knee_preop_planning#readme",
-  "dependencies": {
-    "serve": "^14.1.2"
+  "dependencies": {},
+  "devDependencies": {
+    "http-server": "^14.1.1"
   }
 }

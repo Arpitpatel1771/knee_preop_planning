@@ -305,7 +305,7 @@
             state.planes.varusPlane = plane;
             state.planes.varusHelper = helper;
             scene.remove(scene.getObjectByName(name));
-            // scene.add(helper);
+            scene.add(helper);
 
             let sidebar = document.getElementById("sidebar-right");
             let incremental = parser
@@ -372,7 +372,7 @@
             state.planes.flexionPlane = plane;
             state.planes.flexionHelper = helper;
             scene.remove(scene.getObjectByName(name));
-            // scene.add(helper);
+            scene.add(helper);
 
             let sidebar = document.getElementById("sidebar-right");
             let incremental = parser
@@ -416,7 +416,7 @@
             state.planes.distalMedialPlane = plane;
             state.planes.distalMedialHelper = helper;
             scene.remove(scene.getObjectByName(name));
-            // scene.add(helper);
+            scene.add(helper);
         }
 
         if (state.planes.distalMedialPlane) {
@@ -439,7 +439,7 @@
             state.planes.distalResectionPlane = plane;
             state.planes.distalResectionHelper = helper;
             scene.remove(scene.getObjectByName(name));
-            // scene.add(helper);           
+            scene.add(helper);           
             
             let sidebar = document.getElementById("sidebar-right");
             let incremental = parser
